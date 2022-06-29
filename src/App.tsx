@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { app } from "./index";
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  getDoc,
+  query,
+} from "firebase/firestore/lite";
 import {
   getAuth,
   signInWithPopup,
@@ -10,7 +18,10 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import { sign } from "crypto";
+
+import getProducts from "./services/apiService";
+import ProductComponent from "./components/product/product.component";
+import { Product } from "./components/product/Product";
 
 interface User {
   name: string;
@@ -23,9 +34,18 @@ function App() {
     photo: "",
     email: "",
   });
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    // obtenerProductos();
+    getProductsFromDB();
+  }, []);
 
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
+  const db = getFirestore(app);
+  const productRef = collection(db, "products");
+  const productsRef = query(productRef);
   const signIn = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -80,14 +100,47 @@ function App() {
       )
       .catch((err) => console.log(err));
   };
+
+  const obtenerProductos = () => {
+    getProducts().then((p) => {
+      const prods: Product[] = p.map((x: any) => new Product(x));
+      setProducts(prods);
+      insertProducts(products);
+    });
+  };
+
+  const insertProducts = (prods: Product[]) => {
+    prods.map(async (product) => {
+      await setDoc(doc(productRef, `${product.id}`), {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+      });
+    });
+  };
+
+  const getProductsFromDB = async () => {
+    const docSnap = await getDocs(productsRef);
+    docSnap.forEach((doc) => {
+      var prod = doc.data();
+      var p = new Product(prod);
+      console.log(products);
+      setProducts((prods) => [...prods, p]);
+    });
+  };
+
   return (
     <div className="App">
       <button onClick={signIn}>Traer info</button>
       <h3>{user.name}</h3>
       <p>{user.email}</p>
+      {products.map((p: Product) => (
+        <ProductComponent key={p.id} product={p}></ProductComponent>
+      ))}
       {user.photo && <img src={user.photo} alt="fotito del tincho " />}{" "}
       <button onClick={verUsuario}>Ver usuario actual</button>
-      <button onClick={signOutUser}>LogOut</button>
+      {user.email && <button onClick={signOutUser}>LogOut</button>}
+      <button onClick={obtenerProductos}>Get Productos</button>
     </div>
   );
 }

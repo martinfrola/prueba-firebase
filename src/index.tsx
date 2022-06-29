@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import sass from "sass";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBgH3YmojuveFxvam8M_vgiyhTCsgF1D04",
