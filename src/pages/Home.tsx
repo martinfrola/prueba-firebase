@@ -20,8 +20,19 @@ import {
 
 import getProducts from "../services/apiService";
 import ProductCard from "../components/product/ProductCard";
-import { ProductCardClass } from "../components/product/ProductCard.class";
-import { Grid } from "@mui/material";
+import { ProductCardClass } from "../models/ProductCard.class";
+import {
+  Avatar,
+  CardMedia,
+  Divider,
+  Grid,
+  IconButton,
+  InputBase,
+  Paper,
+  Stack,
+} from "@mui/material";
+import ProductList from "../components/product-list/ProductList";
+import SearchIcon from "@mui/icons-material/Search";
 
 interface User {
   name: string;
@@ -138,26 +149,51 @@ export default function Home() {
 
   return (
     <div className="App">
-      <button onClick={signIn}>Traer info</button>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={2}
+      >
+        <img
+          src="https://www.logolynx.com/images/logolynx/f0/f009386dc544d1455db05db19d454629.png"
+          width={100}
+          height={60}
+          alt="Logo"
+        ></img>
+
+        <Paper
+          component="form"
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+            width: 400,
+          }}
+        >
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Buscá un producto o tienda..."
+            inputProps={{ "aria-label": "Buscá un producto o tienda..." }}
+          />
+          <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+
+        <Avatar
+          alt="Usuario"
+          src="https://v4.mui.com/static/images/avatar/1.jpg"
+        />
+      </Stack>
       <h3>{user.name}</h3>
       <p>{user.email}</p>
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
-        {Array.from(Array(6)).map((_, index) => (
-          <Grid item xs={2} sm={4} md={4} key={index}>
-            {products.map((p: ProductCardClass) => (
-              <ProductCard key={p.id} product={p}></ProductCard>
-            ))}
-          </Grid>
-        ))}
-      </Grid>
+      <ProductList products={products}></ProductList>
       {user.photo && <img src={user.photo} alt="fotito del tincho " />}{" "}
       <button onClick={verUsuario}>Ver usuario actual</button>
       {user.email && <button onClick={signOutUser}>LogOut</button>}
-      <button onClick={obtenerProductos}>Get Productos</button>
+      <button onClick={obtenerProductos}>Get Productos</button>      
+      <button onClick={signIn}>Traer info</button>
     </div>
   );
 }
