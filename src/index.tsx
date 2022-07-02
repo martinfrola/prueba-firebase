@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import MyRoutes from "./routes/MyRoutes";
 import sass from "sass";
 
 const firebaseConfig = {
@@ -26,7 +27,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <MyRoutes />
   </React.StrictMode>
 );
 
