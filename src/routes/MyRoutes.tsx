@@ -25,7 +25,7 @@ export default function MyRoutes() {
           <Route path="producto/:productoId" element={<Product />} />
           <Route path="resultados/:busqueda" element={<SearchResults />} />
           <Route path="tiendas" element={<Stores />}>
-            <Route path=":tienda" element={<SellerProfile />} />
+            <Route path=":idTienda" element={<SellerProfile />} />
           </Route>
           <Route path="perfil" element={<UserProfile />} />
         </Route>

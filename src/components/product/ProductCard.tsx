@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ProductCardClass } from "./ProductCard.class";
-import "./product.styled.scss";
+import "./ProductCard.styled.scss";
 
 const comprar = () => {
   console.log("Comprar");

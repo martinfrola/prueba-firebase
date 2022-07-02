@@ -122,12 +122,12 @@ export default function Home() {
 
   const getProductsFromDB = async () => {
     const docSnap = await getDocs(productsRef);
-    docSnap.forEach((doc) => {
-      var prod = doc.data();
-      var p = new ProductCardClass(prod);
-      console.log(products);
-      setProducts((prods) => [...prods, p]);
+    const listProducts: ProductCardClass[] = [];
+    docSnap.forEach((doc) => {      
+      const p = new ProductCardClass(doc.data());
+      listProducts.push(p);
     });
+    setProducts(listProducts);
   };
 
   return (
