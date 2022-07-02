@@ -21,6 +21,7 @@ import {
 import getProducts from "../services/apiService";
 import ProductCard from "../components/product/ProductCard";
 import { ProductCardClass } from "../components/product/ProductCard.class";
+import { Grid } from "@mui/material";
 
 interface User {
   name: string;
@@ -111,11 +112,16 @@ export default function Home() {
   };
 
   const insertProducts = (prods: ProductCardClass[]) => {
-    prods.map(async (product) => {
-      await setDoc(doc(productRef, `${product.id}`), {
+    prods.map((product: ProductCardClass) => {
+      setDoc(doc(productRef, `${product.id}`), {
         id: product.id,
         title: product.title,
         price: product.price,
+        description: product.description,
+        image: product.image,
+        stock: product.stock,
+      }).catch((error) => {
+        console.error(error);
       });
     });
   };
@@ -123,7 +129,7 @@ export default function Home() {
   const getProductsFromDB = async () => {
     const docSnap = await getDocs(productsRef);
     const listProducts: ProductCardClass[] = [];
-    docSnap.forEach((doc) => {      
+    docSnap.forEach((doc) => {
       const p = new ProductCardClass(doc.data());
       listProducts.push(p);
     });
@@ -135,9 +141,19 @@ export default function Home() {
       <button onClick={signIn}>Traer info</button>
       <h3>{user.name}</h3>
       <p>{user.email}</p>
-      {products.map((p: ProductCardClass) => (
-        <ProductCard key={p.id} product={p}></ProductCard>
-      ))}
+      <Grid
+        container
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        {Array.from(Array(6)).map((_, index) => (
+          <Grid item xs={2} sm={4} md={4} key={index}>
+            {products.map((p: ProductCardClass) => (
+              <ProductCard key={p.id} product={p}></ProductCard>
+            ))}
+          </Grid>
+        ))}
+      </Grid>
       {user.photo && <img src={user.photo} alt="fotito del tincho " />}{" "}
       <button onClick={verUsuario}>Ver usuario actual</button>
       {user.email && <button onClick={signOutUser}>LogOut</button>}
