@@ -10,6 +10,10 @@ export const theme = createTheme({
       main: "#CDC9C3",
       dark: "#555555",
     },
+    background: {
+      default: "#FBF7F0",
+      paper: "#FBF7F0",
+    },
   },
   typography: {
     fontFamily: ["Poppins", "Roboto"].join(","),
