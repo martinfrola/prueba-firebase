@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { app } from "../index";
+import { app } from "../services/firebase";
 import { Outlet } from "react-router-dom";
 import {
   getFirestore,
@@ -39,6 +39,7 @@ export default function Home() {
   useEffect(() => {
     // obtenerProductos();
     getProductsFromDB();
+    verUsuario();
   }, []);
 
   const provider = new GoogleAuthProvider();
@@ -81,7 +82,6 @@ export default function Home() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
-
         // ...
       } else {
         console.log("No hay usuario");
@@ -155,7 +155,7 @@ export default function Home() {
         ))}
       </Grid>
       {user.photo && <img src={user.photo} alt="fotito del tincho " />}{" "}
-      <button onClick={verUsuario}>Ver usuario actual</button>
+      {/* <button onClick={verUsuario}>Ver usuario actual</button> */}
       {user.email && <button onClick={signOutUser}>LogOut</button>}
       <button onClick={obtenerProductos}>Get Productos</button>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import { theme } from "../utils/theam";
 import App from "../App";
 import Home from "../pages/Home";
@@ -18,6 +19,7 @@ export default function MyRoutes() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<Home />} />
