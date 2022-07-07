@@ -4,7 +4,6 @@ import {
   createUser,
   signIn,
   signInGoogle,
-  verifyUser,
   signInFacebook,
   logOut,
 } from "../../services/login";
@@ -17,11 +16,12 @@ import {
   Grid,
   Button,
   TextField,
-  Box,
-  Container,
+  Typography,
 } from "@mui/material";
-import { margin, padding } from "@mui/system";
-
+import googleIcon from "../../utils/media/photos/google.png";
+import facebookIcon from "../../utils/media/photos/facebook.png";
+import GoogleIcon from "@mui/icons-material/Google";
+import FacebookIcon from "@mui/icons-material/Facebook";
 export default function LoginContainer() {
   const navigate = useNavigate();
 
@@ -49,10 +49,10 @@ export default function LoginContainer() {
   ) => {
     switch (e?.currentTarget.name) {
       case cases.google:
-        signInGoogle().then(() => navigate("../", { replace: true }));
+        signInGoogle().then(() => navigate("../"));
         break;
       case cases.facebook:
-        signInFacebook().then(() => navigate("../", { replace: true }));
+        signInFacebook().then(() => navigate("../"));
         break;
       case cases.signIn:
         signIn(loginData.email, loginData.pass)
@@ -62,9 +62,7 @@ export default function LoginContainer() {
           .catch((res) => console.log(res));
         break;
       case cases.createUser:
-        createUser(loginData.email, loginData.pass).then(() =>
-          navigate("../", { replace: true })
-        );
+        createUser(loginData.email, loginData.pass).then(() => navigate("../"));
         break;
     }
   };
@@ -78,20 +76,29 @@ export default function LoginContainer() {
       >
         Cerrar Sesión
       </button>
+      <Typography
+        variant="h4"
+        sx={{ textAlign: "center", paddingBottom: "40px" }}
+      >
+        ¡Inicia sesión como prefieras!
+      </Typography>
       <Grid
         container
+        xl={9}
         sx={{
           margin: "0 auto",
-          gap: "50px",
         }}
       >
         <Grid
           item
-          lg={7}
+          lg={4}
           sm={9}
           xs={11}
           sx={{
             margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
           }}
         >
           <Button
@@ -104,7 +111,10 @@ export default function LoginContainer() {
               margin: "0 0 20px 0",
             }}
           >
-            Iniciar sesión con Google
+            <GoogleIcon sx={{ fontSize: 25 }} />
+            <Typography sx={{ padding: "0 0 0 10px" }} variant="body2">
+              Iniciar Sesión con Google
+            </Typography>
           </Button>
           <Button
             variant="outlined"
@@ -116,12 +126,16 @@ export default function LoginContainer() {
               margin: "0 0 20px 0",
             }}
           >
-            Iniciar sesión con Facebook
+            <FacebookIcon sx={{ fontSize: 25 }} />
+            <Typography sx={{ padding: "0 0 0 10px" }} variant="body2">
+              Iniciar Sesión con Facebook
+            </Typography>
           </Button>
         </Grid>
+
         <Grid
           item
-          lg={7}
+          lg={4}
           sm={9}
           xs={11}
           sx={{
@@ -172,21 +186,6 @@ export default function LoginContainer() {
           >
             Crear Cuenta
           </Button>
-        </Grid>
-
-        <Grid
-          item
-          lg={7}
-          sm={9}
-          xs={11}
-          sx={{
-            margin: "0 auto",
-            paddingTop: 0,
-          }}
-        >
-          <Link href="#" variant="body2" color="secondary">
-            Forgot password?
-          </Link>
         </Grid>
       </Grid>
     </>
