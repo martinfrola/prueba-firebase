@@ -10,13 +10,17 @@ import {
 } from "../../services/login";
 import { LoginData } from "./LoginContainer.class";
 import { useNavigate } from "react-router-dom";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import FormGroup from "@mui/material/FormGroup";
+import {
+  Stack,
+  FormGroup,
+  Link,
+  Grid,
+  Button,
+  TextField,
+  Box,
+  Container,
+} from "@mui/material";
+import { margin, padding } from "@mui/system";
 
 export default function LoginContainer() {
   const navigate = useNavigate();
@@ -34,23 +38,30 @@ export default function LoginContainer() {
       [e.target.name]: e.target.value,
     });
   };
-
+  enum cases {
+    google = "google",
+    facebook = "facebook",
+    signIn = "signIn",
+    createUser = "createAcount",
+  }
   const handleLogin = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
   ) => {
     switch (e?.currentTarget.name) {
-      case "google":
+      case cases.google:
         signInGoogle().then(() => navigate("../", { replace: true }));
         break;
-      case "facebook":
+      case cases.facebook:
         signInFacebook().then(() => navigate("../", { replace: true }));
         break;
-      case "logIn":
-        signIn(loginData.email, loginData.pass).then(() =>
-          navigate("../", { replace: true })
-        );
+      case cases.signIn:
+        signIn(loginData.email, loginData.pass)
+          .then((res) => {
+            navigate("../");
+          })
+          .catch((res) => console.log(res));
         break;
-      case "createAcount":
+      case cases.createUser:
         createUser(loginData.email, loginData.pass).then(() =>
           navigate("../", { replace: true })
         );
@@ -59,7 +70,7 @@ export default function LoginContainer() {
   };
 
   return (
-    <Container>
+    <>
       <button
         onClick={() =>
           logOut().then(() => navigate("../login", { replace: true }))
@@ -67,14 +78,31 @@ export default function LoginContainer() {
       >
         Cerrar Sesión
       </button>
-      <Box>
-        <Box>
+      <Grid
+        container
+        sx={{
+          margin: "0 auto",
+          gap: "50px",
+        }}
+      >
+        <Grid
+          item
+          lg={7}
+          sm={9}
+          xs={11}
+          sx={{
+            margin: "0 auto",
+          }}
+        >
           <Button
             variant="outlined"
             fullWidth
             color="secondary"
             name="google"
             onClick={handleLogin}
+            sx={{
+              margin: "0 0 20px 0",
+            }}
           >
             Iniciar sesión con Google
           </Button>
@@ -84,11 +112,22 @@ export default function LoginContainer() {
             color="secondary"
             name="facebook"
             onClick={handleLogin}
+            sx={{
+              margin: "0 0 20px 0",
+            }}
           >
             Iniciar sesión con Facebook
           </Button>
-        </Box>
-        <FormGroup>
+        </Grid>
+        <Grid
+          item
+          lg={7}
+          sm={9}
+          xs={11}
+          sx={{
+            margin: "0 auto",
+          }}
+        >
           <TextField
             required
             name="email"
@@ -96,6 +135,9 @@ export default function LoginContainer() {
             label="Email"
             fullWidth
             onChange={handleChange}
+            sx={{
+              margin: "0 0 10px 0",
+            }}
           />
           <TextField
             required
@@ -104,14 +146,20 @@ export default function LoginContainer() {
             label="Contraseña"
             fullWidth
             onChange={handleChange}
+            sx={{
+              margin: "0 0 30px 0",
+            }}
           />
           <Button
             type="submit"
             variant="contained"
             fullWidth
             color="secondary"
-            name="logIn"
+            name="signIn"
             onClick={handleLogin}
+            sx={{
+              margin: "0 0 30px 0",
+            }}
           >
             Iniciar sesión
           </Button>
@@ -124,20 +172,23 @@ export default function LoginContainer() {
           >
             Crear Cuenta
           </Button>
-        </FormGroup>
-        <Grid container>
-          <Grid item xs>
-            <Link href="#" variant="body2" color="secondary">
-              Forgot password?
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link href="#" variant="body2" color="secondary">
-              {"Don't have an account? Sign Up"}
-            </Link>
-          </Grid>
         </Grid>
-      </Box>
-    </Container>
+
+        <Grid
+          item
+          lg={7}
+          sm={9}
+          xs={11}
+          sx={{
+            margin: "0 auto",
+            paddingTop: 0,
+          }}
+        >
+          <Link href="#" variant="body2" color="secondary">
+            Forgot password?
+          </Link>
+        </Grid>
+      </Grid>
+    </>
   );
 }
