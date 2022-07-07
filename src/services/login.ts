@@ -8,6 +8,8 @@ import {
   signOut,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { resolve } from "path";
+import { rejects } from "assert";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -24,16 +26,17 @@ export const createUser = async (email: string, password: string) => {
     });
 };
 
-export const signIn = async (email: string, password: string) => {
-  await signInWithEmailAndPassword(auth, email, password)
+export const signIn = (email: string, password: string) => {
+  return signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
-      return console.log(user);
+      const res = userCredential.user;
+      return res;
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      return console.log(errorCode, errorMessage);
+      const res = { errorCode, errorMessage };
+      throw res;
     });
 };
 
