@@ -7,8 +7,12 @@ export const theme = createTheme({
       main: "#D9E4DD",
     },
     secondary: {
-      main: "#CDC9C3",
-      dark: "#555555",
+      main: "#555555",
+      dark: "#CDC9C3",
+    },
+    background: {
+      default: "#FBF7F0",
+      paper: "#FBF7F0",
     },
   },
   typography: {

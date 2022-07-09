@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { ProductCardClass } from "./ProductCard.class";
+import { ProductCardClass } from "../../models/ProductCard.class";
 import "./ProductCard.styled.scss";
 
 const comprar = () => {
