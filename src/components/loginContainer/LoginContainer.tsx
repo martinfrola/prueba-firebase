@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { app } from "/Users/Martìn/Desktop/Prueba Firebase/firebase-first/src/services/firebase";
 import {
   createUser,
   signIn,
