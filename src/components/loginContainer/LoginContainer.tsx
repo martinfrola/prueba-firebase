@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { app } from "/Users/Martìn/Desktop/Prueba Firebase/firebase-first/src/services/firebase";
+import { app } from "../../services/firebase";
 import {
   createUser,
   signIn,
@@ -18,12 +18,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import googleIcon from "../../utils/media/photos/google.png";
-import facebookIcon from "../../utils/media/photos/facebook.png";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/reducers/userReducer";
 export default function LoginContainer() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const dispatchSetUser = (user: Object) =>
+    dispatch(
+      setUser({
+        payload: user,
+      })
+    );
 
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
@@ -38,18 +46,25 @@ export default function LoginContainer() {
       [e.target.name]: e.target.value,
     });
   };
+
   enum cases {
     google = "google",
     facebook = "facebook",
     signIn = "signIn",
     createUser = "createAcount",
   }
+
   const handleLogin = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
   ) => {
     switch (e?.currentTarget.name) {
       case cases.google:
-        signInGoogle().then(() => navigate("../"));
+        signInGoogle()
+          .then((res) => {
+            dispatchSetUser(res);
+            navigate("../");
+          })
+          .catch((res) => console.log(res));
         break;
       case cases.facebook:
         signInFacebook().then(() => navigate("../"));
@@ -57,6 +72,7 @@ export default function LoginContainer() {
       case cases.signIn:
         signIn(loginData.email, loginData.pass)
           .then((res) => {
+            dispatchSetUser(res);
             navigate("../");
           })
           .catch((res) => console.log(res));
@@ -69,11 +85,7 @@ export default function LoginContainer() {
 
   return (
     <>
-      <button
-        onClick={() =>
-          logOut().then(() => navigate("../login", { replace: true }))
-        }
-      >
+      <button onClick={() => logOut().then(() => navigate("../login"))}>
         Cerrar Sesión
       </button>
       <Typography

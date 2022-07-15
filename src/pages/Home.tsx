@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { app } from "../services/firebase";
-import { Outlet } from "react-router-dom";
 import {
   getFirestore,
   collection,
@@ -33,6 +32,7 @@ import {
 } from "@mui/material";
 import ProductList from "../components/product-list/ProductList";
 import SearchIcon from "@mui/icons-material/Search";
+import { useSelector } from "react-redux";
 
 interface User {
   name: string;
@@ -40,6 +40,7 @@ interface User {
   email: string;
 }
 export default function Home() {
+  const userState = useSelector((state) => state);
   const [user, setUser] = useState<User>({
     name: "",
     photo: "",
@@ -51,6 +52,7 @@ export default function Home() {
     // obtenerProductos();
     getProductsFromDB();
     verUsuario();
+    console.log(userState);
   }, []);
 
   const provider = new GoogleAuthProvider();
@@ -192,7 +194,7 @@ export default function Home() {
       {user.photo && <img src={user.photo} alt="fotito del tincho " />}{" "}
       {/* <button onClick={verUsuario}>Ver usuario actual</button> */}
       {user.email && <button onClick={signOutUser}>LogOut</button>}
-      <button onClick={obtenerProductos}>Get Productos</button>      
+      <button onClick={obtenerProductos}>Get Productos</button>
       <button onClick={signIn}>Traer info</button>
     </div>
   );
