@@ -23,14 +23,8 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<any>) {
-      console.log(
-        "🚀 ~ file: userReducer.ts ~ line 28 ~ setUser ~ action",
-        action
-      );
-      const newState = Object.assign({}, state, action.payload);
-
-      return newState;
+    setUser(state, action: PayloadAction<UserStateModel>) {
+      return Object.assign({}, state, action.payload);
     },
     cleanUser() {
       return initialState;
