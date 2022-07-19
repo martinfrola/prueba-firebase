@@ -14,16 +14,21 @@ import getProducts from "../services/apiService";
 import { ProductCardClass } from "../models/ProductCard.class";
 import ProductList from "../components/product-list/ProductList";
 import Header from "../components/header/header";
+import { addManySucursales, addOneSucursal } from "../models/Sucursales.mock";
+import { addManyTiendas } from "../models/Tiendas.mock";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductCardClass[]>([]);
   useEffect(() => {
     // obtenerProductos();
-    getProductsFromDB();
+    // getProductsFromDB();
+    // insertTiendas();
   }, []);
 
   const db = getFirestore(app);
   const productRef = collection(db, "products");
+  const sucursalesRef = collection(db, "sucursales");
+  const tiendasRef = collection(db, "tiendas");
   const productsRef = query(productRef);
   const obtenerProductos = () => {
     getProducts().then((p) => {
@@ -50,6 +55,42 @@ export default function Home() {
     });
   };
 
+  const insertSucursales = () => {
+    const sucursales = addManySucursales(30);
+    sucursales.forEach((suc) => {
+      setDoc(doc(sucursalesRef, suc.id.toString()), {
+        id: suc.id,
+        direccion: suc.direccion,
+        name: suc.name,
+        coords: suc.coords,
+      });
+    });
+  };
+
+  const insertTiendas = () => {
+    const tiendas = addManyTiendas();
+    tiendas.forEach((tienda) => {
+      setDoc(doc(tiendasRef, tienda.id.toString()), {
+        id: tienda.id,
+        name: tienda.name,
+        responsable: tienda.responsable,
+        cuit: tienda.cuit,
+        descripcion: tienda.descripcion,
+        imgUrl: tienda.imgUrl,
+        phone: tienda.phone,
+        sucursales: tienda.sucursales,
+      });
+    });
+  };
+
+  const getSucursales = () => {
+    getDocs(sucursalesRef).then((docSnap) => {
+      docSnap.forEach((doc) => {
+        doc.data();
+      });
+    });
+  };
+
   const getProductsFromDB = async () => {
     const docSnap = await getDocs(productsRef);
     const listProducts: ProductCardClass[] = [];
@@ -62,7 +103,7 @@ export default function Home() {
 
   return (
     <div className="App">
-      <Header></Header>
+      <Header products={products}></Header>
       <ProductList products={products}></ProductList>
       <button onClick={obtenerProductos}>Get Productos</button>
     </div>

@@ -1,15 +1,27 @@
 import { useState, useEffect } from "react";
 import { Stack, Paper, InputBase, IconButton, Avatar } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import useDebounce from "../../hooks/useDebounce";
+import { useDebounce } from "../../hooks/useDebounce";
+import { ProductCardClass } from "../../models/ProductCard.class";
 
-export default function Header() {
+interface Props {
+  products: ProductCardClass[];
+}
+export default function Header({ products }: Props) {
   const [search, setSearch] = useState<string | null>(null);
-  const debounceSearch = useDebounce(search, 1000);
+  const debounceSearch = useDebounce(search, 300);
+
   useEffect(() => {
-    console.log(search);
-    console.log(debounceSearch);
+    searchProducts();
   }, [debounceSearch]);
+
+  const searchProducts = async () => {
+    if (search) {
+      let p = products.filter((x) => x.title.toLowerCase().includes(search.toLowerCase()));
+      console.log("🚀 ~ file: header.tsx ~ line 21 ~ searchProducts ~ p", p)
+    }
+  };
+
   return (
     <Stack
       direction="row"
