@@ -1,4 +1,4 @@
-import { app, auth } from "./firebase";
+import { auth } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -7,8 +7,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { resolve } from "path";
-import { rejects } from "assert";
+import { UserStateModel } from "../store/reducers/userReducer";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -57,10 +56,17 @@ export const signInGoogle = () => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const user = result.user;
-      const res = {
-        user,
-        token,
+      console.log("🚀 ~ file: login.ts ~ line 59 ~ .then ~ user", user);
+
+      const res: UserStateModel = {
+        displayName: user.displayName ?? "",
+        email: user.email ?? "",
+        photoURL: user.photoURL ?? "",
+        emailVerified: user.emailVerified,
+        token: token ?? "",
+        uid: user.uid ?? "",
       };
+
       return res;
     })
     .catch((error) => {

@@ -21,17 +21,10 @@ import {
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../store/reducers/userReducer";
+import { setUser, UserStateModel } from "../../store/reducers/userReducer";
 export default function LoginContainer() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const dispatchSetUser = (user: Object) =>
-    dispatch(
-      setUser({
-        payload: user,
-      })
-    );
 
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
@@ -60,8 +53,12 @@ export default function LoginContainer() {
     switch (e?.currentTarget.name) {
       case cases.google:
         signInGoogle()
-          .then((res) => {
-            dispatchSetUser(res);
+          .then((res: UserStateModel) => {
+            console.log(
+              "🚀 ~ file: LoginContainer.tsx ~ line 57 ~ .then ~ res",
+              res
+            );
+            dispatch(setUser(res));
             navigate("../");
           })
           .catch((res) => console.log(res));
@@ -72,7 +69,7 @@ export default function LoginContainer() {
       case cases.signIn:
         signIn(loginData.email, loginData.pass)
           .then((res) => {
-            dispatchSetUser(res);
+            // dispatch(res);
             navigate("../");
           })
           .catch((res) => console.log(res));

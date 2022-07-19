@@ -33,6 +33,7 @@ import {
 import ProductList from "../components/product-list/ProductList";
 import SearchIcon from "@mui/icons-material/Search";
 import { useSelector } from "react-redux";
+import { useAppSelector } from "../hooks/redux-toolkit-hooks";
 
 interface User {
   name: string;
@@ -40,7 +41,7 @@ interface User {
   email: string;
 }
 export default function Home() {
-  const userState = useSelector((state) => state);
+  const userState = useAppSelector((state) => state.user);
   const [user, setUser] = useState<User>({
     name: "",
     photo: "",
