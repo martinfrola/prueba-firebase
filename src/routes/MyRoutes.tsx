@@ -4,7 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { theme } from "../utils/theam";
 import App from "../App";
-import Home from "../pages/Home";
+import NewHome from "../pages/NewHome";
 import Contact from "../pages/Contact";
 import FrecuentQuestions from "../pages/FrecuentQuestions";
 import Login from "../pages/Login";
@@ -22,7 +22,7 @@ export default function MyRoutes() {
         <CssBaseline />
         <Routes>
           <Route path="/" element={<App />}>
-            <Route index element={<Home />} />
+            <Route index element={<NewHome />} />
             <Route path="contacto" element={<Contact />} />
             <Route path="preguntasfrecuentes" element={<FrecuentQuestions />} />
             <Route path="login" element={<Login />} />
